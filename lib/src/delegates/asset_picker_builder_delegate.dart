@@ -210,13 +210,18 @@ abstract class AssetPickerBuilderDelegate<Asset, Path> {
 
   late final permissionOverlayDisplay = ValueNotifier<bool>(
     limitedPermissionOverlayPredicate?.call(permissionNotifier.value) ??
-        (permissionNotifier.value == PermissionState.limited),
+        (permissionNotifier.value == PermissionState.notDetermined ||
+            permissionNotifier.value == PermissionState.denied ||
+            permissionNotifier.value == PermissionState.restricted),
   );
 
   /// Whether the permission is limited currently.
   /// 当前的权限是否为受限
   bool get isPermissionLimited =>
-      permissionNotifier.value == PermissionState.limited;
+      permissionNotifier.value ==
+      (permissionNotifier.value == PermissionState.notDetermined ||
+          permissionNotifier.value == PermissionState.denied ||
+          permissionNotifier.value == PermissionState.restricted);
 
   bool effectiveShouldRevertGrid(BuildContext context) =>
       shouldRevertGrid ?? isAppleOS(context);
